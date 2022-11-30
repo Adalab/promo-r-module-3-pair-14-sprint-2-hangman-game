@@ -1,19 +1,22 @@
-import { useEffect, useState } from 'react';
-import Header from './Header';
-import Dummy from './Dummy';
+import { useEffect, useState } from "react";
+import Header from "./Header";
+import Dummy from "./Dummy";
+import SolutionLetters from "./SolutionLetters";
+import ErrorLetters from "./ErrorLetters";
+import Form from "./Form";
 // api
-import getWordFromApi from '../services/api';
+import getWordFromApi from "../services/api";
 // styles
-import '../styles/App.scss';
-import '../styles/Dummy.scss';
-import '../styles/Letters.scss';
-import '../styles/Form.scss';
-import '../styles/Header.scss';
+import "../styles/App.scss";
+import "../styles/Dummy.scss";
+import "../styles/Letters.scss";
+import "../styles/Form.scss";
+import "../styles/Header.scss";
 
 function App() {
-  const [word, setWord] = useState('');
+  const [word, setWord] = useState("");
   const [userLetters, setUserLetters] = useState([]);
-  const [lastLetter, setLastLetter] = useState('');
+  const [lastLetter, setLastLetter] = useState("");
 
   useEffect(() => {
     getWordFromApi().then((word) => {
@@ -30,7 +33,7 @@ function App() {
 
   const handleChange = (ev) => {
     let re = /^[a-zA-ZñÑá-úÁ-Ú´]$/; //add regular pattern
-    if (re.test(ev.target.value) || ev.target.value === '') {
+    if (re.test(ev.target.value) || ev.target.value === "") {
       handleLastLetter(ev.target.value);
     }
   };
@@ -47,12 +50,12 @@ function App() {
   };
 
   const renderSolutionLetters = () => {
-    const wordLetters = word.split('');
+    const wordLetters = word.split("");
     return wordLetters.map((letter, index) => {
       const exists = userLetters.includes(letter.toLocaleLowerCase());
       return (
         <li key={index} className="letter">
-          {exists ? letter : ''}
+          {exists ? letter : ""}
         </li>
       );
     });
@@ -87,31 +90,16 @@ function App() {
       <Header></Header>
       <main className="main">
         <section>
-          <div className="solution">
-            <h2 className="title">Solución:</h2>
-            <ul className="letters">{renderSolutionLetters()}</ul>
-          </div>
-          <div className="error">
-            <h2 className="title">Letras falladas:</h2>
-            <ul className="letters">{renderErrorLetters()}</ul>
-          </div>
-          <form className="form" onSubmit={handleSubmit}>
-            <label className="title" htmlFor="last-letter">
-              Escribe una letra:
-            </label>
-            <input
-              autoFocus
-              autoComplete="off"
-              className="form__input"
-              maxLength="1"
-              type="text"
-              name="last-letter"
-              id="last-letter"
-              value={lastLetter}
-              onKeyDown={handleKeyDown}
-              onChange={handleChange}
-            />
-          </form>
+          <SolutionLetters
+            renderSolutionLetters={renderSolutionLetters}
+          ></SolutionLetters>
+          <ErrorLetters renderErrorLetters={renderErrorLetters}></ErrorLetters>
+          <Form
+            handleSubmit={handleSubmit}
+            handleKeyDown={handleKeyDown}
+            handleChange={handleChange}
+            lastLetter={lastLetter}
+          ></Form>
         </section>
         <Dummy n={getNumberOfErrors()}></Dummy>
       </main>
