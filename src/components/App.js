@@ -1,22 +1,23 @@
-import { useEffect, useState } from "react";
-import Header from "./Header";
-import Dummy from "./Dummy";
-import SolutionLetters from "./SolutionLetters";
-import ErrorLetters from "./ErrorLetters";
-import Form from "./Form";
+import { useEffect, useState } from 'react';
+import Header from './Header';
+import Dummy from './Dummy';
+import SolutionLetters from './SolutionLetters';
+import ErrorLetters from './ErrorLetters';
+import Form from './Form';
 // api
-import getWordFromApi from "../services/api";
+import getWordFromApi from '../services/api';
 // styles
-import "../styles/App.scss";
-import "../styles/Dummy.scss";
-import "../styles/Letters.scss";
-import "../styles/Form.scss";
-import "../styles/Header.scss";
+import '../styles/App.scss';
+import '../styles/Dummy.scss';
+import '../styles/Letters.scss';
+import '../styles/Form.scss';
+import '../styles/Header.scss';
+import '../styles/Footer.scss';
 
 function App() {
-  const [word, setWord] = useState("");
+  const [word, setWord] = useState('');
   const [userLetters, setUserLetters] = useState([]);
-  const [lastLetter, setLastLetter] = useState("");
+  const [lastLetter, setLastLetter] = useState('');
 
   useEffect(() => {
     getWordFromApi().then((word) => {
@@ -33,7 +34,7 @@ function App() {
 
   const handleChange = (ev) => {
     let re = /^[a-zA-ZñÑá-úÁ-Ú´]$/; //add regular pattern
-    if (re.test(ev.target.value) || ev.target.value === "") {
+    if (re.test(ev.target.value) || ev.target.value === '') {
       handleLastLetter(ev.target.value);
     }
   };
@@ -50,12 +51,12 @@ function App() {
   };
 
   const renderSolutionLetters = () => {
-    const wordLetters = word.split("");
+    const wordLetters = word.split('');
     return wordLetters.map((letter, index) => {
       const exists = userLetters.includes(letter.toLocaleLowerCase());
       return (
         <li key={index} className="letter">
-          {exists ? letter : ""}
+          {exists ? letter : ''}
         </li>
       );
     });
@@ -103,6 +104,27 @@ function App() {
         </section>
         <Dummy n={getNumberOfErrors()}></Dummy>
       </main>
+      <footer className="footer">
+        <nav>
+          <ul>
+            <li className="footer__menu-item">
+              <a className="footer__menu-link" href="#/">
+                A jugar
+              </a>
+            </li>
+            <li className="footer__menu-item">
+              <a className="footer__menu-link" href="#/instructions">
+                ¿Cómo se juega?
+              </a>
+            </li>
+            <li className="footer__menu-item">
+              <a className="footer__menu-link" href="#/options">
+                Más opciones
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </footer>
     </div>
   );
 }
